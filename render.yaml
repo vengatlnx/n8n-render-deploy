@@ -13,6 +13,6 @@ services:
       - key: N8N_BASIC_AUTH_USER
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
-        value: yourpassword
+        value: admin
       - key: WEBHOOK_URL
-        value: https://your-subdomain.onrender.com/
+        value: https://n8n-render-deploy-lzqt.onrender.com
