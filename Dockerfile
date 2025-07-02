@@ -1,4 +1,12 @@
-FROM n8nio/n8n:latest
+FROM node:20-alpine
+
+WORKDIR /usr/src/app
+
+# Install n8n globally
+RUN npm install -g n8n@latest
+
+# Set environment variables (important for n8n)
+ENV NODE_ENV=production
 
 ENV N8N_BASIC_AUTH_ACTIVE=true
 ENV N8N_BASIC_AUTH_USER=admin
