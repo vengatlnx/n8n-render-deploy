@@ -17,4 +17,6 @@ services:
       - key: WEBHOOK_URL
         value: https://n8n-render-deploy-lzqt.onrender.com
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
-        value: true
+        value: false
+      - key: PORT
+        value: 5678
