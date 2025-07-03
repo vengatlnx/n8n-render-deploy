@@ -1,28 +1,4 @@
-# Stage 1: Node.js environment (for building frontend or installing tools)
-FROM node:20-alpine
-
-# Install n8n globally
-RUN npm install -g n8n@latest
-
-# Set environment vriables (important for n8n)
-ENV NODE_ENV=production
-
-ENV N8N_BASIC_AUTH_ACTIVE=true
-ENV N8N_BASIC_AUTH_USER=admin
-ENV N8N_BASIC_AUTH_PASSWORD=admin
-ENV N8N_HOST=0.0.0.0
-ENV N8N_PORT=5678
-ENV WEBHOOK_URL=https://n8n-render-deploy-lzqt.onrender.com
-ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
-
-EXPOSE 5678
-
-CMD ["n8n", "start"]
-
-
-# Stage 2: Python + Chromium + Playwright
 FROM python:3.11-slim
-
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -30,6 +6,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     ca-certificates \
+    git \
+    nodejs \
+    npm \
     fonts-liberation \
     libasound2 \
     libatk-bridge2.0-0 \
@@ -50,21 +29,31 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Playwright and its dependencies
+# Install Playwright and Chromium
 RUN pip install --no-cache-dir playwright && \
     playwright install --with-deps chromium
 
-# Set environment variables for headless operation
-ENV PYTHONUNBUFFERED=1
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+# Install n8n globally
+RUN npm install -g n8n@latest
 
-# Clone n8n-zepto repo
+# Set environment variables for n8n
+ENV NODE_ENV=production
+ENV N8N_BASIC_AUTH_ACTIVE=true
+ENV N8N_BASIC_AUTH_USER=admin
+ENV N8N_BASIC_AUTH_PASSWORD=admin
+ENV N8N_HOST=0.0.0.0
+ENV N8N_PORT=5678
+ENV WEBHOOK_URL=https://n8n-render-deploy-lzqt.onrender.com
+ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+
+# Clone your Python app
 RUN git clone https://github.com/vengatlnx/n8n-zepto.git /app
-
-# Create app directory
 WORKDIR /app
 
-# Install Python dependencies if requirements.txt exists
+# Install Python dependencies
 RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 
-CMD ["python", "main.py"]
+EXPOSE 5678
+
+# Start both services (n8n and Python) using a script or process manager
+CMD ["bash", "-c", "n8n start & python main.py"]
