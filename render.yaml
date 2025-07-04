@@ -18,7 +18,7 @@ services:
       - key: N8N_BASIC_AUTH_PASSWORD
         value: admin
       - key: WEBHOOK_URL
-        value: https://n8n-render-deploy-lzqt.onrender.com
+        value: https://n8n-render-deploy-lzqt.onrender.com:5678
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
         value: false # Consistent with your Dockerfile setting
       # You might optionally add a PORT environment variable if you want to explicitly
