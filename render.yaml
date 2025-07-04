@@ -1,12 +1,15 @@
 services:
   - type: web
-    name: n8n
+    name: n8n-python-app # A descriptive name for your combined service
     env: docker
     plan: free
     branch: main
     rootDir: .
     dockerfilePath: ./Dockerfile
     autoDeploy: true
+    # Render will automatically detect and expose the ports defined
+    # in your Dockerfile's EXPOSE instructions (5678 and 8000).
+    # The primary URL for this service will likely point to the first exposed port (5678 for n8n).
     envVars:
       - key: N8N_BASIC_AUTH_ACTIVE
         value: true
@@ -17,4 +20,9 @@ services:
       - key: WEBHOOK_URL
         value: https://n8n-render-deploy-lzqt.onrender.com
       - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
-        value: true
+        value: false # Consistent with your Dockerfile setting
+      # You might optionally add a PORT environment variable if you want to explicitly
+      # tell Render which port should be considered the primary one for the service URL.
+      # For example, if n8n is your primary UI:
+      # - key: PORT
+      #   value: 5678
