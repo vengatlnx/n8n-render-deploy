@@ -42,7 +42,7 @@ ENV N8N_BASIC_AUTH_ACTIVE=true
 ENV N8N_BASIC_AUTH_USER=admin
 ENV N8N_BASIC_AUTH_PASSWORD=admin
 ENV N8N_HOST=0.0.0.0
-ENV N8N_PORT=5678 # n8n will listen on this port internally
+ENV N8N_PORT=5678
 ENV WEBHOOK_URL=https://n8n-render-deploy-lzqt.onrender.com
 ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
 
